@@ -47,6 +47,27 @@ const PauseIntentHandler = {
   },
 };
 
+const PlayIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'PlayIntent';
+  },
+  handle(handlerInput) {
+    const uri = mothershipApiRoot + '/play';
+    http.get(uri, (res) => {
+      res.on('data', (_chunk) => {});
+      res.on('end', () => {});
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+    let response = 'Playing!';
+    return handlerInput.responseBuilder
+      // .speak(response)
+      .withSimpleCard(CARD_NAME, response)
+      .getResponse();
+  },
+};
+
 const RadioIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
@@ -145,6 +166,7 @@ exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchRequestHandler,
     PauseIntentHandler,
+    PlayIntentHandler,
     RadioIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,

@@ -38,6 +38,18 @@
           ]
         },
         {
+          "name": "PlayIntent",
+          "slots": [
+
+          ],
+          "samples": [
+            "play",
+            "unpause",
+            "start",
+            "go"
+          ]
+        },
+        {
           "name": "RadioIntent",
           "slots": [
 
