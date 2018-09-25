@@ -50,6 +50,18 @@
           ]
         },
         {
+          "name": "SkipIntent",
+          "slots": [
+
+          ],
+          "samples": [
+            "skip",
+            "next",
+            "skip track",
+            "skip this track"
+          ]
+        },
+        {
           "name": "RadioIntent",
           "slots": [
 

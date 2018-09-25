@@ -6,7 +6,7 @@ const Alexa = require('ask-sdk-core');
 const http = require('http');
 const url = require('url');
 
-const HELP_COMMANDS = 'You can say pause, play, play radio or play random.';
+const HELP_COMMANDS = 'You can say pause, play, skip, play radio or play random.';
 const CARD_NAME = 'Mothership'
 
 const mothershipApiRoot = process.env.MOTHERSHIP_API_ROOT;
@@ -61,6 +61,27 @@ const PlayIntentHandler = {
       console.log("Error: " + err.message);
     });
     let response = 'Playing!';
+    return handlerInput.responseBuilder
+      // .speak(response)
+      .withSimpleCard(CARD_NAME, response)
+      .getResponse();
+  },
+};
+
+const SkipIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'SkipIntent';
+  },
+  handle(handlerInput) {
+    const uri = mothershipApiRoot + '/next';
+    http.get(uri, (res) => {
+      res.on('data', (_chunk) => {});
+      res.on('end', () => {});
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+    let response = 'Skipping!';
     return handlerInput.responseBuilder
       // .speak(response)
       .withSimpleCard(CARD_NAME, response)
@@ -202,6 +223,7 @@ exports.handler = skillBuilder
     LaunchRequestHandler,
     PauseIntentHandler,
     PlayIntentHandler,
+    SkipIntentHandler,
     RadioIntentHandler,
     RandomIntentHandler,
     HelpIntentHandler,
