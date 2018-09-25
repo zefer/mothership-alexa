@@ -21,13 +21,28 @@ const LaunchRequestHandler = {
   },
 };
 
-const CommandIntentHandler = {
+const PauseIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-      && handlerInput.requestEnvelope.request.intent.name === 'CommandIntent';
+      && handlerInput.requestEnvelope.request.intent.name === 'PauseIntent';
   },
   handle(handlerInput) {
-    const speechText = 'Hello World!';
+    const speechText = 'Pausing!';
+
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .withSimpleCard(CARD_NAME, speechText)
+      .getResponse();
+  },
+};
+
+const RadioIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'RadioIntent';
+  },
+  handle(handlerInput) {
+    const speechText = 'Playing radio 6!';
 
     return handlerInput.responseBuilder
       .speak(speechText)
@@ -98,7 +113,8 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchRequestHandler,
-    CommandIntentHandler,
+    PauseIntentHandler,
+    RadioIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler

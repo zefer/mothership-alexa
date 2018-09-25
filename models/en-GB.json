@@ -25,14 +25,26 @@
           ]
         },
         {
-          "name": "CommandIntent",
+          "name": "PauseIntent",
           "slots": [
 
           ],
           "samples": [
-            "hello",
-            "say hello",
-            "say hello world"
+            "pause",
+            "stop",
+            "be quiet",
+            "shut it",
+            "shut up"
+          ]
+        },
+        {
+          "name": "RadioIntent",
+          "slots": [
+
+          ],
+          "samples": [
+            "play radio",
+            "radio"
           ]
         }
       ]
