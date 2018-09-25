@@ -88,17 +88,52 @@ const RadioIntentHandler = {
         'Content-Length': Buffer.byteLength(data)
       }
     };
-
     const req = http.request(options, (res) => {
       res.on('data', (_chunk) => {});
       res.on('end', () => {});
     }).on('error', (_e) => {});
-
     req.write(data);
     req.end();
-
     return handlerInput.responseBuilder
       .withSimpleCard(CARD_NAME, 'Playing radio')
+      .getResponse();
+  },
+};
+
+const RandomIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'RandomIntent';
+  },
+  handle(handlerInput) {
+    let uri = mothershipApiRoot + '/randomOn';
+    http.get(uri, (res) => {
+      res.on('data', (_chunk) => {});
+      res.on('end', () => {});
+    }).on("error", (err) => {});
+
+    const data = JSON.stringify({
+      uri: "music", type: "directory", replace: true, play: true,
+    });
+    uri = url.parse(mothershipApiRoot + '/playlist');
+    const options = {
+      method: 'POST',
+      hostname: uri.hostname,
+      port: uri.port,
+      path: uri.path,
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data)
+      }
+    };
+    const req = http.request(options, (res) => {
+      res.on('data', (_chunk) => {});
+      res.on('end', () => {});
+    }).on('error', (_e) => {});
+    req.write(data);
+    req.end();
+    return handlerInput.responseBuilder
+      .withSimpleCard(CARD_NAME, 'Playing random!')
       .getResponse();
   },
 };
@@ -168,6 +203,7 @@ exports.handler = skillBuilder
     PauseIntentHandler,
     PlayIntentHandler,
     RadioIntentHandler,
+    RandomIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler

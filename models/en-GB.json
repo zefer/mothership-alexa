@@ -58,6 +58,16 @@
             "play radio",
             "radio"
           ]
+        },
+        {
+          "name": "RandomIntent",
+          "slots": [
+
+          ],
+          "samples": [
+            "play random",
+            "random"
+          ]
         }
       ]
     }
