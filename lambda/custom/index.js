@@ -3,8 +3,13 @@
 
 const Alexa = require('ask-sdk-core');
 
+const http = require('http');
+const url = require('url');
+
 const HELP_COMMANDS = 'You can say pause, play, play radio or play random.';
 const CARD_NAME = 'Mothership'
+
+const mothershipApiRoot = process.env.MOTHERSHIP_API_ROOT;
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -27,11 +32,17 @@ const PauseIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'PauseIntent';
   },
   handle(handlerInput) {
-    const speechText = 'Pausing!';
-
+    const uri = mothershipApiRoot + '/pause';
+    http.get(uri, (res) => {
+      res.on('data', (_chunk) => {});
+      res.on('end', () => {});
+    }).on("error", (err) => {
+      console.log("Error: " + err.message);
+    });
+    let response = 'Pausing!';
     return handlerInput.responseBuilder
-      .speak(speechText)
-      .withSimpleCard(CARD_NAME, speechText)
+      // .speak(response)
+      .withSimpleCard(CARD_NAME, response)
       .getResponse();
   },
 };
@@ -42,11 +53,31 @@ const RadioIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'RadioIntent';
   },
   handle(handlerInput) {
-    const speechText = 'Playing radio 6!';
+    const data = JSON.stringify({
+      uri: "radio/BBC 6 Music.m3u", type: "playlist", replace: true, play: true,
+    });
+    const uri = url.parse(mothershipApiRoot + '/playlist');
+    const options = {
+      method: 'POST',
+      hostname: uri.hostname,
+      port: uri.port,
+      path: uri.path,
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data)
+      }
+    };
+
+    const req = http.request(options, (res) => {
+      res.on('data', (_chunk) => {});
+      res.on('end', () => {});
+    }).on('error', (_e) => {});
+
+    req.write(data);
+    req.end();
 
     return handlerInput.responseBuilder
-      .speak(speechText)
-      .withSimpleCard(CARD_NAME, speechText)
+      .withSimpleCard(CARD_NAME, 'Playing radio')
       .getResponse();
   },
 };
