@@ -23,18 +23,21 @@
             "eTag": "e24601cbcd70c3909894320d0b5a1db2"
           },
           "en-GB": {
-            "eTag": "76a65e7b820ffabeb1f3353e312c981d"
+            "eTag": "c5d66cdb9d75660022a5b1c4912f4133"
           }
         },
         "lambda": [
           {
-            "arn": "arn:aws:lambda:us-east-1:220397142633:function:ask-custom-mothership-alexa-custom-skills",
-            "functionName": "arn:aws:lambda:us-east-1:220397142633:function:ask-custom-mothership-alexa-custom-skills",
-            "awsRegion": "us-east-1",
             "alexaUsage": [
               "custom/default"
             ],
-            "revisionId": "8f06d646-8386-4ddf-9667-1aebe1743fd2"
+            "arn": "arn:aws:lambda:us-east-1:220397142633:function:ask-custom-mothership-alexa-custom-skills",
+            "awsRegion": "us-east-1",
+            "codeUri": "lambda/custom",
+            "functionName": "arn:aws:lambda:us-east-1:220397142633:function:ask-custom-mothership-alexa-custom-skills",
+            "handler": "index.handler",
+            "revisionId": "bbf3e0e9-9c30-44f9-8d3d-a63222b58aa6",
+            "runtime": "nodejs10.x"
           }
         ]
       }
